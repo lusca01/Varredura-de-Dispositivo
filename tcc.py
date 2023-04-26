@@ -122,26 +122,7 @@ plt.legend(mylabels,
           bbox_to_anchor=(0.8, 0.518, 0.1, 1))
 
 # Salvando como imagem
-plt.savefig('teste.png')
-
-####### PREPARANDO O PDF ############
-# Definindo o diretório que o pdf será salvo
-pasta= os.path.dirname(__file__)
-
-# Criando um Canvas para "desenhar" o pdf
-report = canvas.Canvas(pasta+"//report.pdf")
-
-# Criando um título ao pdf(cabeçalho)
-report.drawString(50, 800, "**Hello WORLD!**")
-
-# Adicionando uma imagem do gráfico gerado anteriormento ao pdf 
-report.drawImage("./teste.png", 0, 0)
-
-# Salvando a edição do PDF~
-report.save()
-
-# Removendo a imagem do gráfico do diretório
-os.remove('./teste.png')
+plt.savefig('grafic.png')
 
 ################### PDF #############################
 # libs auxiliares para criação do pdf
@@ -253,7 +234,7 @@ story = [
   Paragraph('Máquina: ' + endereco + ' - Data da varredura: ' + str(datetime.now().strftime('%d/%m/%Y %H:%M')), styles['Heading2']),
   Paragraph('________________________________________________________________________________'),
   Paragraph('Relatório de Prioridades', cabecalhoStyle),
-  Image('teste.png', width=550, height=450),
+  Image('grafic.png', width=550, height=450),
   PageBreak(),
   Paragraph('Vulnerabilidades Encontradas', cabecalhoStyle),
   df2table(df),
@@ -266,3 +247,6 @@ story = [
 doc.build(story)
 
 print('Concluído!\nVeja o relatório em PDF na mesma pasta que esse script.')
+
+# Removendo a imagem do gráfico do diretório
+os.remove('./grafic.png')
