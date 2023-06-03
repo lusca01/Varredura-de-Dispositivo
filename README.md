@@ -1,4 +1,4 @@
-# Varredura de Rede
+# Varredura de Dispositivo
 Código contendo o projeto de Verificação de vulnerabilidades - Fatec ZL
 
 O projeto consiste em verificar as vulnerabilidades de um dispositivo conectado
