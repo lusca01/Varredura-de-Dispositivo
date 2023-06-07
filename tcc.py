@@ -5,6 +5,9 @@ import sys
 from reportlab.pdfgen import canvas
 import matplotlib.pyplot as plt
 import numpy as np
+import webbrowser
+import ctypes
+
 
 # Constante para consumo da API
 API_URL_BASE = "https://cve.circl.lu/api/cve/"
@@ -16,6 +19,14 @@ rank = []
 mylist = []
 # lista com as infos dos CVE's
 CVElist = []
+
+# Verificar se o nmap está instalado na máquina
+try:
+    subprocess.check_output('nmap', '--version')
+except:
+    ctypes.windll.user32.MessageBoxW(0, "É necessário baixar o programa NMAP para continuar", "Error 404 - NMAP Not Found", 0x40)
+    webbrowser.open("https://nmap.org/download.html")
+    sys.exit()
 
 # solicitando o endereco
 endereco = input('Digite o endereço da máquina que quer verificar as vulnerabilidades: ')
