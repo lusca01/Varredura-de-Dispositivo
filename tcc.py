@@ -48,9 +48,10 @@ mylist = removeDuplicates(mylist)
 
 # Classe com as propriedades necessárias de um CVE
 class CVE:
-    def __init__(self, id, gravidade, resumo, rank):
+    def __init__(self, id, gravidade, cwe, resumo, rank):
         self.id = id
         self.gravidade = gravidade
+        self.cwe = cwe
         self.resumo = resumo
         self.rank = rank
 
@@ -88,7 +89,7 @@ def verificaCVSS(cvss):
 # Loop para pegar as infos de todos o CVE's encontrados
 for idCVE in mylist:
     response = requests.get(API_URL_BASE+idCVE).json()
-    cve1 = CVE(response['id'], verificaCVSS(response['cvss']), format(response['summary']), verPrioridade(response['cvss']))
+    cve1 = CVE(response['id'], verificaCVSS(response['cvss']), format(response['summary']), response['cwe'], verPrioridade(response['cvss']))
     CVElist.append(cve1)
     rank.append(cve1.rank)
 
@@ -107,8 +108,8 @@ def contaRank(teste):
             high += 1
         if aux == 'CRITIC':
             critic += 1
-    sim = [low, medium, high, critic]
-    return sim
+    priority = [low, medium, high, critic]
+    return priority
 
 
 ########## PREPARANDO O GRÁFICO ############
@@ -218,12 +219,12 @@ styles = getSampleStyleSheet()
 lista_pd = []
 
 for i in CVElist:
-    lista_pd.append([i.id,i.gravidade, i.resumo, i.rank])
+    lista_pd.append([i.id,i.gravidade, i.resumo, i.cwe, i.rank])
     
 
 
 # variável que recebe o DataFrame(tabela) com os dados das vulnerabilidades
-df = pd.DataFrame(lista_pd, columns=['<b>CVE</b>', '<b>GRAVIDADE</b>', '<b>RESUMO</b>', '<b>PRIORIDADE</b>'])
+df = pd.DataFrame(lista_pd, columns=['<b>CVE</b>', '<b>GRAVIDADE</b>', '<b>RESUMO</b>', '<b>CWE</b>', '<b>PRIORIDADE</b>'])
 
 # função que formata a tabela
 def df2table(df):
