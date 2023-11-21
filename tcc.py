@@ -47,11 +47,10 @@ mylist = removeDuplicates(mylist)
 
 # Classe com as propriedades necessárias de um CVE
 class CVE:
-    def __init__(self, id, gravidade, resumo, cwe, rank):
+    def __init__(self, id, gravidade, resumo, rank):
         self.id = id
         self.gravidade = gravidade
         self.resumo = resumo
-        self.cwe = cwe
         self.rank = rank
 
 # Função para verificar a prioridade da vulnerabilidade
@@ -80,7 +79,7 @@ def format(resumo):
 # Loop para pegar as infos de todos o CVE's encontrados
 for idCVE in mylist:
     response = requests.get(API_URL_BASE+idCVE).json()
-    cve1 = CVE(response['id'], response['cvss'], format(response['summary']), response['cwe'], verPrioridade(response['cvss']))
+    cve1 = CVE(response['id'], response['cvss'], format(response['summary']), verPrioridade(response['cvss']))
     CVElist.append(cve1)
     rank.append(cve1.rank)
 
@@ -99,8 +98,8 @@ def contaRank(teste):
             high += 1
         if aux == 'CRITIC':
             critic += 1
-    priority = [low, medium, high, critic]
-    return priority
+    sim = [low, medium, high, critic]
+    return sim
 
 
 ########## PREPARANDO O GRÁFICO ############
@@ -114,7 +113,7 @@ mylabels = ["LOW", "MEDIUM", "HIGH", "CRITIC"]
 mycolors = ["#ffcccc","#ff3333","#990000","#330000"]
 
 # Produzindo o gráfico
-plt.pie(y, labels = mylabels, colors = mycolors)
+plt.pie(y, labels = mylabels, colors=mycolors)
 
 # Adicionando legenda
 plt.legend(mylabels,
@@ -210,12 +209,12 @@ styles = getSampleStyleSheet()
 lista_pd = []
 
 for i in CVElist:
-    lista_pd.append([i.id, i.gravidade, i.resumo, i.cwe, i.rank])
+    lista_pd.append([i.id,i.gravidade, i.resumo, i.rank])
     
 
 
 # variável que recebe o DataFrame(tabela) com os dados das vulnerabilidades
-df = pd.DataFrame(lista_pd, columns=['<b>CVE</b>', '<b>GRAVIDADE</b>', '<b>RESUMO</b>', '<b>CWE</b>', '<b>PRIORIDADE</b>'])
+df = pd.DataFrame(lista_pd, columns=['<b>CVE</b>', '<b>GRAVIDADE</b>', '<b>RESUMO</b>', '<b>PRIORIDADE</b>'])
 
 # função que formata a tabela
 def df2table(df):
@@ -247,7 +246,7 @@ story = [
 # construção do pdf
 doc.build(story)
 
-print('Concluído!\nVeja o relatório em PDF na mesma pasta que este script.')
+print('Concluído!\nVeja o relatório em PDF na mesma pasta que esse script.')
 
 # Removendo a imagem do gráfico do diretório
 os.remove('./grafic.png')
