@@ -161,7 +161,7 @@ from reportlab.lib.styles import getSampleStyleSheet
 
 # definindo algumas foramatações da folha
 padding = dict(
-  leftPadding=72, 
+  leftPadding=60,
   rightPadding=72,
   topPadding=72,
   bottomPadding=18)
@@ -224,7 +224,7 @@ for i in CVElist:
 
 
 # variável que recebe o DataFrame(tabela) com os dados das vulnerabilidades
-df = pd.DataFrame(lista_pd, columns=['<b>CVE</b>', '<b>GRAVIDADE</b>', '<b>RESUMO</b>', '<b>CWE</b>', '<b>PRIORIDADE</b>'])
+df = pd.DataFrame(lista_pd, columns=['<b>CVE</b>', '<b>GRAVIDADE</b>', '<b>CWE</b>', '<b>RESUMO</b>', '<b>PRIORIDADE</b>'])
 
 # função que formata a tabela
 def df2table(df):
